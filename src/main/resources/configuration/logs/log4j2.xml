@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Configuration packages="logging.log4j.custom.plugins" name="SOME NAME">
+    <Appenders>
+        <Console name="ROOT_CONSOLE" target="SYSTEM_OUT">
+            <JsonTemplateLayout eventTemplateUri="classpath:configuration/logs/log4j2_template.json"/>
+        </Console>
+    </Appenders>
+    <Loggers>
+        <Root level="INFO">
+            <AppenderRef ref="ROOT_CONSOLE" />
+        </Root>
+    </Loggers>
+</Configuration>

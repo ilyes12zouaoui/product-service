@@ -1,0 +1,2 @@
+logging:
+  config: classpath:configuration/logs/log4j2.xml
