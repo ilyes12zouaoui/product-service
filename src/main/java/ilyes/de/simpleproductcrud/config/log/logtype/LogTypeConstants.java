@@ -1,4 +1,4 @@
-package ilyes.de.simpleproductcrud.config.log.constant;
+package ilyes.de.simpleproductcrud.config.log.logtype;
 
 public class LogTypeConstants {
 
@@ -16,9 +16,11 @@ public class LogTypeConstants {
     public static final String MAPPING_FINISHED="MAPPING_FINISHED";
     public static final String MAPPING_ERROR="MAPPING_ERROR";
     public static final String MAPPING_WARN="MAPPING_WARN";
-    public static final String FRAMEWORK_LOG ="FRAMEWORK_LOG";
-    public static final String BAD_REQUEST_INPUT_VALIDATION_WARN_LOG ="BAD_REQUEST_INPUT_VALIDATION_WARN_LOG";
-    public static final String BAD_REQUEST_ROUTE_NOT_FOUND_WARN_LOG ="BAD_REQUEST_ROUTE_NOT_FOUND_WARN_LOG";
-    public static final String TECHNICAL_ERROR_LOG ="TECHNICAL_ERROR_LOG";
-    public static final String RUNTIME_ERROR_LOG ="RUNTIME_ERROR_LOG";
+    public static final String PRODUCT_FRAMEWORK ="PRODUCT_FRAMEWORK";
+    public static final String PRODUCT_INPUT_VALIDATION_WARN ="PRODUCT_INPUT_VALIDATION_WARN";
+    public static final String PRODUCT_ROUTE_NOT_FOUND_WARN ="PRODUCT_ROUTE_NOT_FOUND_WARN";
+    public static final String PRODUCT_TECHNICAL_ERROR ="PRODUCT_TECHNICAL_ERROR";
+    public static final String PRODUCT_TECHNICAL_WARN ="PRODUCT_TECHNICAL_WARN";
+    public static final String PRODUCT_RUNTIME_ERROR ="PRODUCT_RUNTIME_ERROR";
+
 }

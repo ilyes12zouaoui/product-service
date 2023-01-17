@@ -11,7 +11,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 
-import static ilyes.de.simpleproductcrud.config.log.constant.LogTypeConstants.RUNTIME_ERROR_LOG;
+import static ilyes.de.simpleproductcrud.config.log.dto.LogContentDTOFactory.createLogContentDTOAsJsonString;
+import static ilyes.de.simpleproductcrud.config.log.logtype.LogTypeConstants.PRODUCT_RUNTIME_ERROR;
 import static ilyes.de.simpleproductcrud.config.log.dto.LogContentDTOFactory.createLogContentDTOAsJsonStringWithDataAndLogType;
 
 @ControllerAdvice
@@ -30,7 +31,7 @@ public class RuntimeExceptionControllerAdvice {
                 HttpStatus.INTERNAL_SERVER_ERROR
         );
 
-        LOGGER.error(createLogContentDTOAsJsonStringWithDataAndLogType(errorResponseTo, RUNTIME_ERROR_LOG),e);
+        LOGGER.error(createLogContentDTOAsJsonString(errorResponseTo, PRODUCT_RUNTIME_ERROR,errorSummary),e);
 
         return new ResponseEntity<>(
                 errorResponseTo,

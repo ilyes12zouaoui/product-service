@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.ArrayList;
 
-import static ilyes.de.simpleproductcrud.config.log.constant.LogTypeConstants.BAD_REQUEST_INPUT_VALIDATION_WARN_LOG;
+import static ilyes.de.simpleproductcrud.config.log.logtype.LogTypeConstants.PRODUCT_INPUT_VALIDATION_WARN;
 
 @ControllerAdvice
 public class RequestValidationExceptionControllerAdvice {
@@ -32,7 +32,7 @@ public class RequestValidationExceptionControllerAdvice {
                     String.format(BAD_REQUEST_ERROR_MESSAGE_FORMAT, violation.getPropertyPath().toString(), violation.getMessage())
             );
         }
-        LOGGER.warn(LogContentDTOFactory.createLogContentDTOAsJsonStringWithDataAndLogType(errorResponseTo,BAD_REQUEST_INPUT_VALIDATION_WARN_LOG),e);
+        LOGGER.warn(LogContentDTOFactory.createLogContentDTOAsJsonString(errorResponseTo, PRODUCT_INPUT_VALIDATION_WARN,errorResponseTo.getErrorSummary()),e);
         return new ResponseEntity<>(
                 errorResponseTo,
                 HttpStatus.BAD_REQUEST
@@ -48,7 +48,7 @@ public class RequestValidationExceptionControllerAdvice {
                     String.format(BAD_REQUEST_ERROR_MESSAGE_FORMAT, fieldError.getField(), fieldError.getDefaultMessage())
             );
         }
-        LOGGER.warn(LogContentDTOFactory.createLogContentDTOAsJsonStringWithDataAndLogType(errorResponseTo,BAD_REQUEST_INPUT_VALIDATION_WARN_LOG),e);
+        LOGGER.warn(LogContentDTOFactory.createLogContentDTOAsJsonString(errorResponseTo, PRODUCT_INPUT_VALIDATION_WARN,errorResponseTo.getErrorSummary()),e);
         return new ResponseEntity<>(
                 errorResponseTo,
                 HttpStatus.BAD_REQUEST

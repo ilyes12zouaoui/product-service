@@ -28,46 +28,11 @@ public class LogOncePerRequest extends OncePerRequestFilter {
         if (correlationId == null) {
             correlationId = requestId;
         }
-        StopWatch stopWatch = new StopWatch();
-        stopWatch.start();
-
-        boolean NoExceptionOccurred = true;
-
-        logProcessRequestStarted(requestId, correlationId);
+        ThreadContext.put("correlationId", correlationId);
+        ThreadContext.put("requestId", requestId);
 
         filterChain.doFilter(request, response);
 
-        stopWatch.stop();
-
-        if (HttpStatus.valueOf(response.getStatus()).isError()) {
-            ThreadContext.clearAll();
-        } else {
-            long requestTimeMilliseconds = stopWatch.getTotalTimeNanos();
-            logProcessRequestFinished(requestTimeMilliseconds, requestId);
-        }
-
-    }
-
-    private void logProcessRequestStarted(String requestId, String correlationId) {
-        // wol ba3d log mte3 api call
-        ThreadContext.put("correlationId", correlationId);
-        ThreadContext.put("requestId", requestId);
-        ThreadContext.put("requestBusinessContext", correlationId);
-        //todo: exception add logtype parameter
-        //todo: request url, header, body, query, path inside data
-        //todo: how to know businessObjectif at this level ?
-        LOGGER.info("correlationId {}", correlationId);
-
-        //   LOGGER.info("requestId {}, host {}  HttpMethod: {}, URI : {}",correlationId, request.getHeader("host"),
-        //           request.getMethod(), request.getRequestURI() );request.getAttribute("requestId")
-
-    }
-
-    private void logProcessRequestFinished(long requestTimeNano, String correlationId) {
-        ThreadContext.put("responseTime", String.format("%d", requestTimeNano));
-        ThreadContext.put("responseTimeSeconds", String.format("%.3f", (float) requestTimeNano / 1_000_000_000));
-        // todo log response body, status, header inside data
-        LOGGER.info("requestId {},request take time: {}", correlationId, 555);
         ThreadContext.clearAll();
 
     }

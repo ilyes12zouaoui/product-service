@@ -22,26 +22,24 @@
     "flatten": true,
     "stringified": true
   },
-  "tttt": {
-    "$resolver": "pattern",
-    "pattern": "%d, level=%p, %cm"
-  },
   "tags": {
     "$resolver": "ndc"
   },
-  "error.type": {
-    "$resolver": "exception",
-    "field": "className"
-  },
-  "error.message": {
-    "$resolver": "exception",
-    "field": "message"
-  },
-  "error.stack_trace": {
-    "$resolver": "exception",
-    "field": "stackTrace",
-    "stackTrace": {
-      "stringified": true
+  "error": {
+    "type": {
+      "$resolver": "exception",
+      "field": "className"
+    },
+    "message": {
+      "$resolver": "exception",
+      "field": "message"
+    },
+    "stack_trace": {
+      "$resolver": "exception",
+      "field": "stackTrace",
+      "stackTrace": {
+        "stringified": true
+      }
     }
   }
 }

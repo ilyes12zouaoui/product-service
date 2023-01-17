@@ -13,7 +13,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 
 import java.util.List;
 
-import static ilyes.de.simpleproductcrud.config.log.constant.LogTypeConstants.BAD_REQUEST_ROUTE_NOT_FOUND_WARN_LOG;
+import static ilyes.de.simpleproductcrud.config.log.logtype.LogTypeConstants.PRODUCT_ROUTE_NOT_FOUND_WARN;
 
 @ControllerAdvice
 public class NoHandlerFoundExceptionControllerAdvice {
@@ -31,7 +31,7 @@ public class NoHandlerFoundExceptionControllerAdvice {
                 List.of(errorSummary),
                 (HttpStatus) e.getStatusCode()
         );
-        LOGGER.warn(LogContentDTOFactory.createLogContentDTOAsJsonStringWithDataAndLogType(errorResponseTo,BAD_REQUEST_ROUTE_NOT_FOUND_WARN_LOG),e);
+        LOGGER.warn(LogContentDTOFactory.createLogContentDTOAsJsonString(errorResponseTo, PRODUCT_ROUTE_NOT_FOUND_WARN,errorSummary),e);
         return new ResponseEntity<>(
                 errorResponseTo,
                 errorResponseTo.getErrorHttpStatus()

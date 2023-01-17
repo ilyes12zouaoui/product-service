@@ -6,7 +6,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import ilyes.de.simpleproductcrud.config.exception.TechnicalException;
 import ilyes.de.simpleproductcrud.config.log.dto.LogContentDTOFactory;
 
@@ -32,7 +34,11 @@ public class ObjectMapperUtilsFactory {
     }
 
     public static ObjectMapper createObjectMapperThatIgnoresNullFieldsSerialization(){
-        return new ObjectMapper().setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        return new ObjectMapper()
+                .setSerializationInclusion(JsonInclude.Include.NON_NULL)
+                .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
+                .configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
+                .registerModule(new JavaTimeModule());
     }
 
     public static String mapToJsonStringIgnoreNullValues(Object o){

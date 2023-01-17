@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import static ilyes.de.simpleproductcrud.config.log.constant.LogTypeConstants.TECHNICAL_ERROR_LOG;
+import static ilyes.de.simpleproductcrud.config.log.dto.LogContentDTOFactory.createLogContentDTOAsJsonString;
 import static ilyes.de.simpleproductcrud.config.log.dto.LogContentDTOFactory.createLogContentDTOAsJsonStringWithDataAndLogType;
 
 @ControllerAdvice
@@ -30,7 +30,12 @@ public class TechnicalExceptionControllerAdvice {
                 e.getErrorHttpStatus()
         );
 
-        LOGGER.error(createLogContentDTOAsJsonStringWithDataAndLogType(errorResponseTo, TECHNICAL_ERROR_LOG),e);
+        if(e.getErrorHttpStatus().is4xxClientError()){
+            LOGGER.warn(createLogContentDTOAsJsonString(errorResponseTo, e.getLogType(),errorResponseTo.getErrorSummary()),e);
+        }else {
+            LOGGER.error(createLogContentDTOAsJsonString(errorResponseTo, e.getLogType(),errorResponseTo.getErrorSummary()),e);
+        }
+
 
         return new ResponseEntity<>(
                 errorResponseTo,

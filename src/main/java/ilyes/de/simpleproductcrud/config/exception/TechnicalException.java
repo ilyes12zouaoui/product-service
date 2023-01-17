@@ -4,14 +4,14 @@ import org.springframework.http.HttpStatus;
 
 import java.util.List;
 
-import static ilyes.de.simpleproductcrud.config.log.constant.LogTypeConstants.TECHNICAL_ERROR_LOG;
+import static ilyes.de.simpleproductcrud.config.log.logtype.LogTypeConstants.PRODUCT_TECHNICAL_ERROR;
 
 public class TechnicalException extends RuntimeException{
 
     private String errorSummary;
     private List<String> errorMessages;
     private HttpStatus errorHttpStatus;
-    private String logType = TECHNICAL_ERROR_LOG;
+    private String logType = PRODUCT_TECHNICAL_ERROR;
 
     public TechnicalException(String errorSummary, HttpStatus errorHttpStatus, List<String> errorMessages, String logType) {
         super(errorSummary);
@@ -33,6 +33,10 @@ public class TechnicalException extends RuntimeException{
 
     public TechnicalException(String errorSummary, HttpStatus errorHttpStatus) {
         this(errorSummary, errorHttpStatus,List.of(errorSummary));
+    }
+
+    public TechnicalException(String errorSummary, HttpStatus errorHttpStatus, String logType) {
+        this(errorSummary, errorHttpStatus,List.of(errorSummary),logType);
     }
 
     public TechnicalException(String errorSummary, Throwable cause, HttpStatus errorHttpStatus, List<String> errorMessages) {

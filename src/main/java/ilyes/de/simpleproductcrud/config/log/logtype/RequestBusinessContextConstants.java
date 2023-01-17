@@ -1,4 +1,4 @@
-package ilyes.de.simpleproductcrud.config.log.constant;
+package ilyes.de.simpleproductcrud.config.log.logtype;
 
 public class RequestBusinessContextConstants {
     public static final String PRODUCT_CREATE = "PRODUCT_CREATE";

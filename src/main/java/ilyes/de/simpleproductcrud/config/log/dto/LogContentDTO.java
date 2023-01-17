@@ -1,15 +1,15 @@
 package ilyes.de.simpleproductcrud.config.log.dto;
 
-import static ilyes.de.simpleproductcrud.config.log.constant.LogTypeConstants.FRAMEWORK_LOG;
+import static ilyes.de.simpleproductcrud.config.log.logtype.LogTypeConstants.PRODUCT_FRAMEWORK;
 
 public class LogContentDTO<T>{
     public static final String CLASS_PROPERTY_NAME_DATA = "data";
     public static final String CLASS_PROPERTY_NAME_LOG_TYPE = "logType";
     public static final String CLASS_PROPERTY_NAME_TITLE = "title";
 
-    public T data;
-    public String logType = FRAMEWORK_LOG;
-    public String title;
+    public T data = (T) new Object();
+    public String logType = PRODUCT_FRAMEWORK;
+    public String title = "";
 
     public LogContentDTO() {
     }
