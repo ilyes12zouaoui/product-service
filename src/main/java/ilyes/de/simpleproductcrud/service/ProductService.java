@@ -30,11 +30,12 @@ public class ProductService {
     public ProductTo createProduct(ProductCreateOrUpdateTo productTo){
         ProductEntity productEntity = ProductMapper.mapToProductEntityFields(productTo);
         productRepository.save(productEntity);
-        return ProductMapper.mapToProductTo(productEntity);
+        return ProductMapper.mapToProductTOWithLog(productEntity,PRODUCT_CREATE_MAP_FROM_ENTITY_TO_PRODCUTTO_BEGIN,PRODUCT_CREATE_MAP_FROM_ENTITY_TO_PRODCUTTO_END);
     }
 
     public ProductTo updateProduct(ProductCreateOrUpdateTo productCreateOrUpdateTo, long id){
         ProductEntity productEntity = tryGetProductEntityById(id, HttpStatus.NOT_FOUND,PRODUCT_UPDATE_HANDLE_REQUEST_WARN);
+
         productEntity.setName(productCreateOrUpdateTo.getName());
         productEntity.setPrice(productCreateOrUpdateTo.getPrice());
         productEntity.setInStock(productCreateOrUpdateTo.inStock());

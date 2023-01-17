@@ -26,7 +26,7 @@ import static ilyes.de.simpleproductcrud.config.log.dto.LogContentDTOFactory.cre
 public class AspectOne {
     private static final Logger LOGGER = LogManager.getLogger(AspectOne.class);
 
-    @Around(value = "@annotation(logRequestAndResponse)")
+    @Around(value = "@annotation(logResource)")
     public Object around(ProceedingJoinPoint joinPoint, LogResource logResource) throws Throwable {
         ServletRequestAttributes ra = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest httpServletRequest = ra.getRequest();
@@ -61,12 +61,13 @@ public class AspectOne {
                         "headers",
                         headers,
                         "pathUrl",
-                        httpServletRequest.getRequestURI()
+                        httpServletRequest.getRequestURI(),
+                        "httpMethod",
+                        httpServletRequest.getMethod()
                 )
         );
 
         LOGGER.info(createLogContentDTOAsJsonStringWithDataAndLogType(logData, logTypeRequest));
-        //todo: 5ammim fil structure
         try {
             Object responseBody = joinPoint.proceed();
             stopWatch.stop();
@@ -80,8 +81,10 @@ public class AspectOne {
                             String.format("%d", requestTimeNano),
                             "timeSeconds",
                             String.format("%.3f", (float) requestTimeNano / 1_000_000_000),
-                            "responseHttpStatus",
-                            String.valueOf(httpServletResponse.getStatus())
+                            "httpStatus",
+                            String.valueOf(httpServletResponse.getStatus()),
+                            "httpMethod",
+                            httpServletRequest.getMethod()
                     )
             );
 

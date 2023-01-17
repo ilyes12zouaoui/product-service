@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.Map;
+
 import static ilyes.de.simpleproductcrud.config.log.dto.LogContentDTOFactory.createLogContentDTOAsJsonString;
 import static ilyes.de.simpleproductcrud.config.log.dto.LogContentDTOFactory.createLogContentDTOAsJsonStringWithDataAndLogType;
 
@@ -23,17 +25,25 @@ public class TechnicalExceptionControllerAdvice {
     @ExceptionHandler(TechnicalException.class)
     @ResponseBody
     ResponseEntity<ErrorResponseTo> onTechnicalException(
-            TechnicalException e, HttpServletRequest request) throws JsonProcessingException {
+            HttpServletRequest httpServletRequest,
+            TechnicalException e) {
         ErrorResponseTo errorResponseTo = new ErrorResponseTo(
                 e.getErrorSummary(),
                 e.getErrorMessages(),
                 e.getErrorHttpStatus()
         );
-
+        var logContent = Map.of("response", Map.of(
+                "body",
+                errorResponseTo,
+                "pathUrl",
+                httpServletRequest.getRequestURI(),
+                "httpMethod",
+                httpServletRequest.getMethod()
+        ));
         if(e.getErrorHttpStatus().is4xxClientError()){
-            LOGGER.warn(createLogContentDTOAsJsonString(errorResponseTo, e.getLogType(),errorResponseTo.getErrorSummary()),e);
+            LOGGER.warn(createLogContentDTOAsJsonString(logContent, e.getLogType(),errorResponseTo.getErrorSummary()),e);
         }else {
-            LOGGER.error(createLogContentDTOAsJsonString(errorResponseTo, e.getLogType(),errorResponseTo.getErrorSummary()),e);
+            LOGGER.error(createLogContentDTOAsJsonString(logContent, e.getLogType(),errorResponseTo.getErrorSummary()),e);
         }
 
 

@@ -1,6 +1,5 @@
 package ilyes.de.simpleproductcrud.repository.entity;
 
-import ilyes.de.simpleproductcrud.repository.ProductRepository;
 import jakarta.persistence.*;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.data.annotation.CreatedDate;
@@ -55,7 +54,7 @@ public class ProductEntity {
         this.price = price;
     }
 
-    public boolean inStock() {
+    public boolean isInStock() {
         return inStock;
     }
 
