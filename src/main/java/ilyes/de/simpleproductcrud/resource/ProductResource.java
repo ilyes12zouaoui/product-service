@@ -52,47 +52,32 @@ public class ProductResource {
             }
     )
     @GetMapping("")
-    @LogResource(
-            logTypeRequest= LogTypeProductConstants.PRODUCT_GET_ALL_HANDLE_REQUEST_BEGIN,
-            logTypeResponse=LogTypeProductConstants.PRODUCT_GET_ALL_HANDLE_REQUEST_END
-    )
+    @LogResource(logType = LogTypeProductConstants.PRODUCT_GET_ALL_HANDLE_REQUEST)
     public List<ProductTo> getAllProducts() {
         return productService.getAllProducts();
     }
 
     @GetMapping("/{id}")
-    @LogResource(
-            logTypeRequest= LogTypeProductConstants.PRODUCT_GET_BY_ID_HANDLE_REQUEST_BEGIN,
-            logTypeResponse=LogTypeProductConstants.PRODUCT_GET_BY_ID_HANDLE_REQUEST_END
-    )
+    @LogResource(logType = LogTypeProductConstants.PRODUCT_GET_BY_ID_HANDLE_REQUEST)
     public ProductTo tryGetProductById(@PathVariable long id) {
-        return productService.tryGetProductById(id);
+        return productService.tryGetProductTOById(id);
     }
 
     @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
-    @LogResource(
-            logTypeRequest= LogTypeProductConstants.PRODUCT_CREATE_HANDLE_REQUEST_BEGIN,
-            logTypeResponse=LogTypeProductConstants.PRODUCT_CREATE_HANDLE_REQUEST_END
-    )
+    @LogResource(logType = LogTypeProductConstants.PRODUCT_CREATE_HANDLE_REQUEST)
     public ProductTo createProduct(@Valid @RequestBody ProductCreateOrUpdateTo productTo) {
-       return productService.createProduct(productTo);
+        return productService.createProduct(productTo);
     }
 
     @PutMapping("/{id}")
-    @LogResource(
-            logTypeRequest= LogTypeProductConstants.PRODUCT_UPDATE_HANDLE_REQUEST_BEGIN,
-            logTypeResponse=LogTypeProductConstants.PRODUCT_UPDATE_HANDLE_REQUEST_END
-    )
+    @LogResource(logType = LogTypeProductConstants.PRODUCT_UPDATE_HANDLE_REQUEST)
     public ProductTo updateProduct(@Valid @RequestBody ProductCreateOrUpdateTo productCreateOrUpdateTo, @PathVariable long id) {
         return productService.updateProduct(productCreateOrUpdateTo, id);
     }
 
     @DeleteMapping("/{id}")
-    @LogResource(
-            logTypeRequest= LogTypeProductConstants.PRODUCT_DELETE_HANDLE_REQUEST_BEGIN,
-            logTypeResponse=LogTypeProductConstants.PRODUCT_DELETE_HANDLE_REQUEST_END
-    )
+    @LogResource(logType = LogTypeProductConstants.PRODUCT_DELETE_HANDLE_REQUEST)
     public ProductTo deleteProduct(@PathVariable long id) {
         return productService.deleteProduct(id);
     }

@@ -32,7 +32,10 @@ public class TechnicalExceptionControllerAdvice {
                 e.getErrorMessages(),
                 e.getErrorHttpStatus()
         );
-        var logContent = Map.of("response", Map.of(
+        var logContent = Map.of(
+                "logData",e.getLogData(),
+
+                "response", Map.of(
                 "body",
                 errorResponseTo,
                 "pathUrl",

@@ -18,7 +18,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class ObjectMapperUtilsFactory {
 
-    private  static final ObjectMapper objectMapperThatIgnoresNullFieldsSerialization = createObjectMapperThatIgnoresNullFieldsSerialization();
     public static ObjectMapper createObjectMapperWithConcurrentMapByDefault(){
         ObjectMapper objectMapper = new ObjectMapper();
         SimpleModule module = new SimpleModule();
@@ -41,12 +40,5 @@ public class ObjectMapperUtilsFactory {
                 .registerModule(new JavaTimeModule());
     }
 
-    public static String mapToJsonStringIgnoreNullValues(Object o){
-        try {
-            return objectMapperThatIgnoresNullFieldsSerialization.setSerializationInclusion(JsonInclude.Include.NON_NULL).writeValueAsString(o);
-        } catch (JsonProcessingException e) {
-            throw new TechnicalException("Failed to mapToJsonStringIgnoreNull ",e);
-        }
-    }
 
 }

@@ -5,52 +5,46 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import ilyes.de.simpleproductcrud.config.exception.TechnicalException;
 import ilyes.de.simpleproductcrud.config.utils.objectmapper.ObjectMapperUtilsFactory;
 
+import java.util.Map;
+
 public class LogContentDTOFactory {
 
     private static final ObjectMapper objectMapperThatIgnoresNullFieldsSerialization = ObjectMapperUtilsFactory
             .createObjectMapperThatIgnoresNullFieldsSerialization();
 
-    public static <T> String createLogContentDTOAsJsonStringWithData(T data) {
-        try {
-            return objectMapperThatIgnoresNullFieldsSerialization
-                    .writeValueAsString(
-                            createLogContentDTO(data)
-                    );
-        } catch (JsonProcessingException e) {
-            throw new TechnicalException("Failed to mapToJsonLog ", e);
-        }
-    }
-
     public static <T> String createLogContentDTOAsJsonStringWithTitle(String title) {
+        LogContentDTO<Object> logContentDTO= createLogContentDTOWithTitle(title);
         try {
             return objectMapperThatIgnoresNullFieldsSerialization
                     .writeValueAsString(
-                            createLogContentDTOWithTitle(title)
+                            logContentDTO
                     );
         } catch (JsonProcessingException e) {
-            throw new TechnicalException("Failed to mapToJsonLogString ", e);
+            throw new TechnicalException("Failed to mapToJsonLogString ", e, Map.of("logContentDTO",logContentDTO,"exceptionType",JsonProcessingException.class,"exceptionMessage",e.getMessage()));
         }
     }
 
     public static <T> String createLogContentDTOAsJsonStringWithDataAndLogType(T data, String logType) {
+        LogContentDTO<T> logContentDTO= createLogContentDTO(data,logType);
         try {
             return objectMapperThatIgnoresNullFieldsSerialization
                     .writeValueAsString(
-                            createLogContentDTO(data,logType)
+                            logContentDTO
                     );
         } catch (JsonProcessingException e) {
-            throw new TechnicalException("Failed to mapToJsonLog ", e);
+            throw new TechnicalException("Failed to mapToJsonLog ", e,Map.of("logContentDTO",logContentDTO,"exceptionType",JsonProcessingException.class,"exceptionMessage",e.getMessage()));
         }
     }
 
     public static <T> String createLogContentDTOAsJsonString(T data, String logType, String title) {
+        LogContentDTO<T> logContentDTO =  createLogContentDTO(data,logType,title);
         try {
             return objectMapperThatIgnoresNullFieldsSerialization
                     .writeValueAsString(
-                            createLogContentDTO(data,logType,title)
+                            logContentDTO
                     );
         } catch (JsonProcessingException e) {
-            throw new TechnicalException("Failed to mapToJsonLog ", e);
+            throw new TechnicalException("Failed to mapToJsonLog ", e,Map.of("logContentDTO",logContentDTO,"exceptionType",JsonProcessingException.class,"exceptionMessage",e.getMessage()));
         }
     }
 

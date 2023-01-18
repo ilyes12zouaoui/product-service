@@ -7,6 +7,8 @@ import ilyes.de.simpleproductcrud.config.exception.TechnicalException;
 import ilyes.de.simpleproductcrud.config.log.dto.LogContentDTO;
 import ilyes.de.simpleproductcrud.config.utils.objectmapper.ObjectMapperUtilsFactory;
 import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.core.LogEvent;
 import org.apache.logging.log4j.core.config.Property;
@@ -14,7 +16,9 @@ import org.apache.logging.log4j.core.impl.Log4jLogEvent;
 import org.apache.logging.log4j.core.impl.LogEventFactory;
 import org.apache.logging.log4j.message.Message;
 import org.apache.logging.log4j.message.ObjectMessage;
+import org.apache.logging.log4j.message.StringFormattedMessage;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -23,6 +27,7 @@ import static ilyes.de.simpleproductcrud.config.log.dto.LogContentDTOFactory.cre
 
 public class MaskSensitiveDataLogEventFactory implements LogEventFactory {
 
+    Logger LOGGER = LogManager.getLogger(MaskSensitiveDataLogEventFactory.class);
     private final List<String> SENSITIVE_KEYS_TO_MASK = List.of(
             "errorSummary",
             "sensitive"
@@ -53,7 +58,11 @@ public class MaskSensitiveDataLogEventFactory implements LogEventFactory {
                 message = new ObjectMessage(map);
             }
         } catch (JsonProcessingException | TechnicalException ignored) {
-            message = new ObjectMessage(createLogContentDTOAsJsonStringWithTitle(message.getFormattedMessage()));
+            try {
+                message = new ObjectMessage(createLogContentDTOAsJsonStringWithTitle(message.getFormattedMessage()));
+            } catch (TechnicalException ex){
+                message = new StringFormattedMessage(String.format("Failed to serialize/deserialize json string, %s, %s", ex.getLogData().getOrDefault("exceptionMessage",""), Arrays.toString(ex.getStackTrace())));
+            }
         }
 
         return new Log4jLogEvent(loggerName, marker, fqcn, level, message, properties, t);

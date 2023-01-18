@@ -6,12 +6,14 @@ import ilyes.de.simpleproductcrud.mapper.to.ProductTo;
 import ilyes.de.simpleproductcrud.mapper.to.ProductCreateOrUpdateTo;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ProductMapper {
 
    private static final Logger LOGGER = LogManager.getLogger(ProductMapper.class);
 
-    public static ProductEntity mapToProductEntityFields(ProductCreateOrUpdateTo productTo) {
+    public ProductEntity mapToProductEntityFields(ProductCreateOrUpdateTo productTo) {
         if(productTo == null) {
             return null;
         }
@@ -22,7 +24,7 @@ public class ProductMapper {
         );
     }
 
-    public static ProductTo mapToProductTo(ProductEntity productEntity) {
+    public ProductTo mapToProductTo(ProductEntity productEntity) {
 
         if(productEntity == null) {
             return null;
@@ -38,16 +40,12 @@ public class ProductMapper {
         );
     }
 
-    public static ProductTo mapToProductTOWithLog(ProductEntity productEntity,
-                                                  String logTypeBegin,
-                                                  String logTypeEnd) {
-        LOGGER.info(LogContentDTOFactory.createLogContentDTOAsJsonStringWithDataAndLogType(
-                productEntity,
-                logTypeBegin
-        ));
+    public ProductTo mapToProductTOWithLogs(ProductEntity productEntity) {
+
         if(productEntity == null) {
             return null;
         }
+
 
         var response = new ProductTo(
                 productEntity.getId(),
@@ -57,10 +55,6 @@ public class ProductMapper {
                 productEntity.getCreatedAt(),
                 productEntity.getModifiedAt()
         );
-        LOGGER.info(LogContentDTOFactory.createLogContentDTOAsJsonStringWithDataAndLogType(
-                response,
-                logTypeEnd
-        ));
 
         return response;
     }

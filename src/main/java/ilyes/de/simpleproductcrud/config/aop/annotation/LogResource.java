@@ -9,6 +9,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 @Target(METHOD)
 public @interface LogResource {
-    String logTypeRequest() default "PRODUCT-SERVICE-REQUEST";
-    String logTypeResponse() default  "PRODUCT-SERVICE-RESPONSE";
+    String logType() default "PRODUCT-SERVICE";
+    boolean shouldLogHeaders() default false;
+    boolean shouldLogQueryParams() default false;
 }

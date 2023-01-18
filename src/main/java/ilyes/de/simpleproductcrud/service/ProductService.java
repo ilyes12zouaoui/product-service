@@ -22,19 +22,21 @@ public class ProductService {
 
     private static final Logger LOGGER = LogManager.getLogger(ProductService.class);
     private ProductRepository productRepository;
+    private ProductMapper productMapper;
 
-    public ProductService(ProductRepository productRepository){
+    public ProductService(ProductRepository productRepository, ProductMapper productMapper){
         this.productRepository = productRepository;
+        this.productMapper = productMapper;
     }
 
     public ProductTo createProduct(ProductCreateOrUpdateTo productTo){
-        ProductEntity productEntity = ProductMapper.mapToProductEntityFields(productTo);
+        ProductEntity productEntity = productMapper.mapToProductEntityFields(productTo);
         productRepository.save(productEntity);
-        return ProductMapper.mapToProductTOWithLog(productEntity,PRODUCT_CREATE_MAP_FROM_ENTITY_TO_PRODCUTTO_BEGIN,PRODUCT_CREATE_MAP_FROM_ENTITY_TO_PRODCUTTO_END);
+        return productMapper.mapToProductTOWithLogs(productEntity);
     }
 
     public ProductTo updateProduct(ProductCreateOrUpdateTo productCreateOrUpdateTo, long id){
-        ProductEntity productEntity = tryGetProductEntityById(id, HttpStatus.NOT_FOUND,PRODUCT_UPDATE_HANDLE_REQUEST_WARN);
+        ProductEntity productEntity = tryGetProductEntityById(id);
 
         productEntity.setName(productCreateOrUpdateTo.getName());
         productEntity.setPrice(productCreateOrUpdateTo.getPrice());
@@ -42,26 +44,41 @@ public class ProductService {
 
         productRepository.save(productEntity);
 
-        return  ProductMapper.mapToProductTo(productEntity);
+        return  productMapper.mapToProductTo(productEntity);
     }
 
     public ProductTo deleteProduct(long id){
-        ProductEntity productEntity = tryGetProductEntityById(id,HttpStatus.NOT_FOUND,PRODUCT_DELETE_HANDLE_REQUEST_WARN);
+        ProductEntity productEntity = tryGetProductEntityById(id);
         productRepository.delete(productEntity);
-        return  ProductMapper.mapToProductTo(productEntity);
+        return  productMapper.mapToProductTo(productEntity);
     }
 
     public List<ProductTo> getAllProducts(){
-       return productRepository.findAll().stream().map(ProductMapper::mapToProductTo).collect(Collectors.toList());
+       return productRepository.findAll().stream().map(productMapper::mapToProductTo).collect(Collectors.toList());
+    }
+
+    public ProductTo tryGetProductTOById(long id){
+        return productMapper.mapToProductTo(tryGetProductEntityById(id));
     }
 
     public ProductEntity tryGetProductEntityById(long id,HttpStatus httpStatus,String logType){
         Optional<ProductEntity> optionalProductEntity =  productRepository.findById(id);
-        return optionalProductEntity.orElseThrow(()->new ProductNotFoundException(id, httpStatus,logType));
+        return optionalProductEntity.orElseThrow(()-> {
+            if(logType==null && httpStatus==null) {
+                return new ProductNotFoundException(id, HttpStatus.NOT_FOUND);
+            }else if(logType == null){
+                return new ProductNotFoundException(id, httpStatus);
+            }else{
+                return new ProductNotFoundException(id, httpStatus, logType);
+            }
+        });
     }
 
-    public ProductTo tryGetProductById(long id){
-       return ProductMapper.mapToProductTo(tryGetProductEntityById(id,HttpStatus.NOT_FOUND,PRODUCT_GET_BY_ID_HANDLE_REQUEST_WARN));
+    public ProductEntity tryGetProductEntityById(long id,HttpStatus httpStatus){
+        return this.tryGetProductEntityById(id, httpStatus,null);
     }
 
+    public ProductEntity tryGetProductEntityById(long id){
+        return this.tryGetProductEntityById(id,null,null);
+    }
 }
