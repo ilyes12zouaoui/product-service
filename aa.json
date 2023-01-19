@@ -1,0 +1,21 @@
+{
+  "@timestamp": "2023-01-18T16:31:10.974Z",
+  "level": "INFO",
+  "message": {
+    "logType": "PRODUCT_MAPPER_END",
+    "data": {
+      "timeSeconds": "0.001",
+      "response": {
+        "price": 5.0,
+        "name": "milka",
+        "inStock": false,
+        "id": 0
+      },
+      "timeNano": "1164100"
+    },
+    "title": ""
+  },
+  "logger": "ilyes.de.simpleproductcrud.config.aop.aspect.AspectTwo",
+  "correlationId": "62822c34-fcf7-46d0-b66c-17f5b7ae8d40",
+  "requestId": "62822c34-fcf7-46d0-b66c-17f5b7ae8d40"
+}

@@ -20,11 +20,20 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-log4j2")
     implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("org.springframework.cloud:spring-cloud-starter-openfeign")
     implementation("org.jetbrains:annotations:20.1.0")
     runtimeOnly("com.h2database:h2")
     runtimeOnly("org.apache.logging.log4j:log4j-layout-template-json:2.19.0")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
+
+extra["springCloudVersion"] = "2022.0.0"
+dependencyManagement {
+    imports {
+        mavenBom("org.springframework.cloud:spring-cloud-dependencies:${property("springCloudVersion")}")
+    }
+}
+
 
 configurations.all {
         exclude("org.springframework.boot","spring-boot-starter-logging")
